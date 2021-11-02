@@ -1,3 +1,5 @@
+window.sessionStorage
+
 /*  On écoute les évènements sur la page, après que la page soit chargée complètement */
 window.addEventListener('load', () =>{
 
@@ -91,7 +93,7 @@ window.addEventListener('load', () =>{
         /* On appendChild le bouton Supprimer (DeleteButton) dans les actions (actions) */
         task_actions_el.appendChild(task_delete_el);
 
-        input.value = ""; /* Retrouver à quoi ça sert concrètement de remettre la valeur à null, mais empêche des erreurs */
+        input.value = ""; 
 
 
 
