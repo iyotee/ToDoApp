@@ -1,5 +1,3 @@
-window.sessionStorage
-
 /*  On écoute les évènements sur la page, après que la page soit chargée complètement */
 window.addEventListener('load', () =>{
 
