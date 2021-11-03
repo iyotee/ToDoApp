@@ -73,7 +73,7 @@ window.addEventListener('load', () =>{
                     |_task_delete_el
         */
 
-        /* On appendChild la tâche (task) dans les tâches (list_el) */ 
+        /* On appendChild la tâche (task) dans les tâches (list_el)*/ 
         list_el.appendChild(task_root_el);
         
         /* On appendChild le contenu (content) dans la tâche (task_root_el) */
@@ -91,9 +91,22 @@ window.addEventListener('load', () =>{
         /* On appendChild le bouton Supprimer (DeleteButton) dans les actions (actions) */
         task_actions_el.appendChild(task_delete_el);
 
-        input.value = ""; 
+        /* On remet à la valeure de l'input du user à null */
+        input.value = "";
 
+        /* On écoute les évènements de click sur l'input de la tâche (task_input_el) */
+        task_content_el.addEventListener('click', () => {
 
+            if (task_input_el.classList == "text" && task_edit_el.innerHTML.toLowerCase() == "editer"){
+                task_input_el.classList.add('checked');
+                console.log("checked");
+            }else{
+                task_input_el.classList.remove('checked');
+                console.log("remove checked");
+            }
+            
+
+        })
 
         /* On écoute les évènements de click sur le bouton edit (task_edit_el) */
         task_edit_el.addEventListener('click', () => {

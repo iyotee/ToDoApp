@@ -119,13 +119,32 @@ main {
 }
 
 #tasks .task .content .text {
-    color: var(--light);
+    color: var(--dark);
     font-size: var(--fontsize);
     width:100%;
     display: block;
     transition: var(--defaultTransition);
-
 }
+
+/* La couleur de texte de base si la tâche n'est pas checked ( autrement dit, si elle n'a pas la classe .checked) */
+#tasks .task .content .text:not(.checked){
+    color:var(--light);
+}
+
+#tasks .task .content .text::selection {
+    background-color: transparent;
+}
+
+.checked{
+    
+    text-decoration-line: line-through;
+    opacity: 0.8;
+}
+
+.checked::selection {
+    background-color: transparent;
+}
+
 
 #tasks .task .content .text:not(:read-only){
     color: var(--pink)
