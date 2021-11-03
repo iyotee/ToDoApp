@@ -96,14 +96,11 @@ window.addEventListener('load', () =>{
 
         /* On écoute les évènements de click sur l'input de la tâche (task_input_el) et SI la classe de l'input user est text ( donc normal ) ALORS on ajoute la classe checked pour dire que la tâche est faite */
         task_content_el.addEventListener('click', () => {
-
             if (task_input_el.classList == "text" && task_edit_el.innerHTML.toLowerCase() == "editer"){
                 task_input_el.classList.add('checked');
             }else{
                 task_input_el.classList.remove('checked');
             }
-            
-
         })
 
         /* On écoute les évènements de click sur le bouton edit (task_edit_el) */
@@ -126,7 +123,6 @@ window.addEventListener('load', () =>{
                 task_input_el.setAttribute("readonly", "readonly");
                 task_edit_el.innerHTML = "Editer"
             }
-
         });
 
         /* On écoute les évènements sur le bouton delete */
@@ -135,6 +131,5 @@ window.addEventListener('load', () =>{
             /* On delete l'enfant task (task_root_el) du parent tasks (list_el) */
             list_el.removeChild(task_root_el);
         });
-
     });
 });
