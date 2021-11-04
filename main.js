@@ -1,4 +1,4 @@
-window.document.title = "SwissLabs | ToDo";
+window.document.title = "SwissLabs | ToDo tet";
 /*  On écoute les évènements sur la page, après que la page soit chargée complètement */
 window.addEventListener('load', () =>{
 
@@ -6,10 +6,6 @@ window.addEventListener('load', () =>{
     const form = document.querySelector("#new-task-form");
     const input = document.querySelector("#new-task-input");
     const list_el = document.querySelector("#tasks");
-
-    /* On créer un element div et on ajoute la classe .task */
-    const task_root_el = document.createElement("div");
-    task_root_el.classList.add("task");
 
 
     /* On écoute les évènements submit sur le formulaire form */
@@ -25,23 +21,8 @@ window.addEventListener('load', () =>{
             return;
         }
 
-        /* FACON ARRAY On ajoute la tache au localStorage */
-        var new_data = taskValue;
+
         
-         if(localStorage.getItem('savedtask') == null){
-            localStorage.setItem('savedtask', '[]');
-        }
-
-
-        var old_data = JSON.parse(localStorage.getItem('savedtask'));
-        old_data.push(new_data);
-
-        localStorage.setItem('savedtask', JSON.stringify(old_data));
-
-        for(let i=0; i < old_data.length; i++){
-            console.log(old_data[i]);
-        }
-
         /* Ici on va faire la partie dynamique, c'est à dire la partie de la div task */
 
         /* On créer un element div et on ajoute la classe .task */
@@ -63,12 +44,12 @@ window.addEventListener('load', () =>{
         const task_actions_el = document.createElement("div");
         task_actions_el.classList.add("actions");
 
-       /*  On créer un element button et on lui ajoute la classe edit ainsi qu'un innerHTML pour le nommer "Editer" */
+        /* On créer un element button et on lui ajoute la classe edit ainsi qu'un innerHTML pour le nommer "Editer" */
         const task_edit_el = document.createElement("button");
         task_edit_el.classList.add("edit");
         task_edit_el.innerHTML = "Editer";
 
-        /*  On créer un element button et on lui ajoute la classe delete ainsi qu'un innerHTML pour le nommer "Supprimer" */
+        /* On créer un element button et on lui ajoute la classe delete ainsi qu'un innerHTML pour le nommer "Supprimer" */
         const task_delete_el = document.createElement("button");
         task_delete_el.classList.add("delete");
         task_delete_el.innerHTML = "Supprimer";
@@ -129,6 +110,20 @@ window.addEventListener('load', () =>{
                 task_input_el.classList.remove('checked');
             }
         });
+
+
+        /* FACON ARRAY On ajoute la tache au localStorage */
+        var new_data = taskValue;
+        
+         if(localStorage.getItem('savedtask') == null){
+            localStorage.setItem('savedtask', '[]');
+        }
+
+
+        var old_data = JSON.parse(localStorage.getItem('savedtask'));
+        old_data.push(new_data);
+
+        localStorage.setItem('savedtask', JSON.stringify(old_data));
 
         /* On écoute les évènements de click sur le bouton edit (task_edit_el) */
         task_edit_el.addEventListener('click', () => {
