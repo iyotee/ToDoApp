@@ -1,3 +1,4 @@
+window.document.title = "SwissLabs | ToDo";
 /*  On écoute les évènements sur la page, après que la page soit chargée complètement */
 window.addEventListener('load', () =>{
 
@@ -5,6 +6,11 @@ window.addEventListener('load', () =>{
     const form = document.querySelector("#new-task-form");
     const input = document.querySelector("#new-task-input");
     const list_el = document.querySelector("#tasks");
+
+    /* On créer un element div et on ajoute la classe .task */
+    const task_root_el = document.createElement("div");
+    task_root_el.classList.add("task");
+
 
     /* On écoute les évènements submit sur le formulaire form */
     form.addEventListener('submit', (e) => {
@@ -17,6 +23,23 @@ window.addEventListener('load', () =>{
         if(!taskValue){
             alert("Veuillez indiquer une tâche à faire");
             return;
+        }
+
+        /* FACON ARRAY On ajoute la tache au localStorage */
+        var new_data = taskValue;
+        
+         if(localStorage.getItem('savedtask') == null){
+            localStorage.setItem('savedtask', '[]');
+        }
+
+
+        var old_data = JSON.parse(localStorage.getItem('savedtask'));
+        old_data.push(new_data);
+
+        localStorage.setItem('savedtask', JSON.stringify(old_data));
+
+        for(let i=0; i < old_data.length; i++){
+            console.log(old_data[i]);
         }
 
         /* Ici on va faire la partie dynamique, c'est à dire la partie de la div task */
@@ -72,6 +95,9 @@ window.addEventListener('load', () =>{
                     |_task_edit_el
                     |_task_delete_el
         */
+       
+
+
 
         /* On appendChild la tâche (task) dans les tâches (list_el)*/ 
         list_el.appendChild(task_root_el);
@@ -93,6 +119,7 @@ window.addEventListener('load', () =>{
 
         /* On remet à la valeure de l'input du user à null */
         input.value = "";
+            
 
         /* On écoute les évènements de click sur l'input de la tâche (task_input_el) et SI la classe de l'input user est text ( donc normal ) ALORS on ajoute la classe checked pour dire que la tâche est faite */
         task_content_el.addEventListener('click', () => {
@@ -101,7 +128,7 @@ window.addEventListener('load', () =>{
             }else{
                 task_input_el.classList.remove('checked');
             }
-        })
+        });
 
         /* On écoute les évènements de click sur le bouton edit (task_edit_el) */
         task_edit_el.addEventListener('click', () => {
@@ -130,6 +157,9 @@ window.addEventListener('load', () =>{
 
             /* On delete l'enfant task (task_root_el) du parent tasks (list_el) */
             list_el.removeChild(task_root_el);
+
+            /* On delete la tâche du localStorage */
+    
         });
     });
 });
