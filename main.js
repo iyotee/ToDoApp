@@ -6,6 +6,7 @@ window.addEventListener('load', () =>{
     const input = document.querySelector("#new-task-input");
     const list_el = document.querySelector("#tasks");
 
+
     /* On écoute les évènements submit sur le formulaire form */
     form.addEventListener('submit', (e) => {
         e.preventDefault(); /* Retrouver à quoi ça sert concrètement */
@@ -18,6 +19,20 @@ window.addEventListener('load', () =>{
             alert("Veuillez indiquer une tâche à faire");
             return;
         }
+
+        /* FACON ARRAY On ajoute la tâche au localStorage */
+        var new_data = taskValue;
+        
+        if(localStorage.getItem('savedtask') == null){
+            localStorage.setItem('savedtask', '[]');
+        }
+        
+        var old_data = JSON.parse(localStorage.getItem('savedtask'));
+        old_data.push(new_data);
+
+        old_data = JSON.stringify(old_data);
+
+        localStorage.setItem('savedtask', old_data);
 
         /* Ici on va faire la partie dynamique, c'est à dire la partie de la div task */
 
@@ -33,7 +48,12 @@ window.addEventListener('load', () =>{
         const task_input_el = document.createElement("input");
         task_input_el.type = "text";
         task_input_el.classList.add("text");
-        task_input_el.value = taskValue;
+
+        var value = JSON.parse(localStorage.getItem('savedtask'))
+        for(var i=0; i < value.length; i++){
+            task_input_el.value = value[i];
+        }
+
         task_input_el.setAttribute("readonly","readonly");
         
         /* On créer un element div et on ajoute la classe .actions */
@@ -103,18 +123,6 @@ window.addEventListener('load', () =>{
             }
         });
         
-        /* FACON ARRAY On ajoute la tache au localStorage */
-        var new_data = taskValue;
-        
-        if(localStorage.getItem('savedtask') == null){
-            localStorage.setItem('savedtask', '[]');
-        }
-        
-        var old_data = JSON.parse(localStorage.getItem('savedtask'));
-        old_data.push(new_data);
-
-        localStorage.setItem('savedtask', JSON.stringify(old_data));
-
         /* On écoute les évènements de click sur le bouton edit (task_edit_el) */
         task_edit_el.addEventListener('click', () => {
 
@@ -141,6 +149,14 @@ window.addEventListener('load', () =>{
 
             /* On delete l'enfant task (task_root_el) du parent tasks (list_el) */
             list_el.removeChild(task_root_el);
+
+            
+            var delete_value = JSON.parse(localStorage.getItem('savedtask'))
+            for(var i=0; i < delete_value.length; i++){
+                localStorage.removeItem('savedtask', task_input_el.value[i]);
+            }
+    
+
         });
     });
 });
