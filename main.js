@@ -101,7 +101,19 @@ window.addEventListener('load', () =>{
             }else{
                 task_input_el.classList.remove('checked');
             }
-        })
+        });
+        
+        /* FACON ARRAY On ajoute la tache au localStorage */
+        var new_data = taskValue;
+        
+        if(localStorage.getItem('savedtask') == null){
+            localStorage.setItem('savedtask', '[]');
+        }
+        
+        var old_data = JSON.parse(localStorage.getItem('savedtask'));
+        old_data.push(new_data);
+
+        localStorage.setItem('savedtask', JSON.stringify(old_data));
 
         /* On écoute les évènements de click sur le bouton edit (task_edit_el) */
         task_edit_el.addEventListener('click', () => {
