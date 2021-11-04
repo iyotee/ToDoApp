@@ -1,4 +1,3 @@
-window.document.title = "SwissLabs | ToDo tet";
 /*  On écoute les évènements sur la page, après que la page soit chargée complètement */
 window.addEventListener('load', () =>{
 
@@ -6,7 +5,6 @@ window.addEventListener('load', () =>{
     const form = document.querySelector("#new-task-form");
     const input = document.querySelector("#new-task-input");
     const list_el = document.querySelector("#tasks");
-
 
     /* On écoute les évènements submit sur le formulaire form */
     form.addEventListener('submit', (e) => {
@@ -21,8 +19,6 @@ window.addEventListener('load', () =>{
             return;
         }
 
-
-        
         /* Ici on va faire la partie dynamique, c'est à dire la partie de la div task */
 
         /* On créer un element div et on ajoute la classe .task */
@@ -44,12 +40,12 @@ window.addEventListener('load', () =>{
         const task_actions_el = document.createElement("div");
         task_actions_el.classList.add("actions");
 
-        /* On créer un element button et on lui ajoute la classe edit ainsi qu'un innerHTML pour le nommer "Editer" */
+       /*  On créer un element button et on lui ajoute la classe edit ainsi qu'un innerHTML pour le nommer "Editer" */
         const task_edit_el = document.createElement("button");
         task_edit_el.classList.add("edit");
         task_edit_el.innerHTML = "Editer";
 
-        /* On créer un element button et on lui ajoute la classe delete ainsi qu'un innerHTML pour le nommer "Supprimer" */
+        /*  On créer un element button et on lui ajoute la classe delete ainsi qu'un innerHTML pour le nommer "Supprimer" */
         const task_delete_el = document.createElement("button");
         task_delete_el.classList.add("delete");
         task_delete_el.innerHTML = "Supprimer";
@@ -76,9 +72,6 @@ window.addEventListener('load', () =>{
                     |_task_edit_el
                     |_task_delete_el
         */
-       
-
-
 
         /* On appendChild la tâche (task) dans les tâches (list_el)*/ 
         list_el.appendChild(task_root_el);
@@ -100,7 +93,6 @@ window.addEventListener('load', () =>{
 
         /* On remet à la valeure de l'input du user à null */
         input.value = "";
-            
 
         /* On écoute les évènements de click sur l'input de la tâche (task_input_el) et SI la classe de l'input user est text ( donc normal ) ALORS on ajoute la classe checked pour dire que la tâche est faite */
         task_content_el.addEventListener('click', () => {
@@ -109,21 +101,7 @@ window.addEventListener('load', () =>{
             }else{
                 task_input_el.classList.remove('checked');
             }
-        });
-
-
-        /* FACON ARRAY On ajoute la tache au localStorage */
-        var new_data = taskValue;
-        
-         if(localStorage.getItem('savedtask') == null){
-            localStorage.setItem('savedtask', '[]');
-        }
-
-
-        var old_data = JSON.parse(localStorage.getItem('savedtask'));
-        old_data.push(new_data);
-
-        localStorage.setItem('savedtask', JSON.stringify(old_data));
+        })
 
         /* On écoute les évènements de click sur le bouton edit (task_edit_el) */
         task_edit_el.addEventListener('click', () => {
@@ -132,7 +110,6 @@ window.addEventListener('load', () =>{
             - On retire l'attribut de readOnly de l'input (task_input_el) pour permettre au user de modifier sa tâche
             - On focus sur l'input user ( permet au curseur de passer en mode edition sur l'input sans qu'on ai besoin d'aller cliquer dessus)
             - On modifie la valeure du bouton Edit (le InnerHTML puisque c'est un bouton) pour devenir "Sauver"
-
             SINON (donc ça veut dire que c'est marqué Sauver) -> 
             - On remet l'attribut de readOnly de l'input (task_input_el) pour de nouveau ne plus permettre de modifier
             - On remet l'innerHTML du bouton Edit en "Edit" */
@@ -152,9 +129,6 @@ window.addEventListener('load', () =>{
 
             /* On delete l'enfant task (task_root_el) du parent tasks (list_el) */
             list_el.removeChild(task_root_el);
-
-            /* On delete la tâche du localStorage */
-    
         });
     });
 });
