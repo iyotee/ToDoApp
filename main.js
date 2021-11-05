@@ -5,8 +5,6 @@ window.addEventListener("load", () => {
   const input = document.querySelector("#new-task-input");
   const list_el = document.querySelector("#tasks");
 
-  
-
   /* On écoute les évènements submit sur le formulaire form */
   form.addEventListener("submit", (e) => {
     e.preventDefault(); /* Retrouver à quoi ça sert concrètement */
@@ -48,7 +46,7 @@ window.addEventListener("load", () => {
       completed: false,
     };
 
-    setStorage(localStorage.key, new_data);
+    setStorage("test", new_data);
 
     /* Ici on va faire la partie dynamique, c'est à dire la partie de la div task */
 
@@ -64,7 +62,7 @@ window.addEventListener("load", () => {
     const task_input_el = document.createElement("input");
     task_input_el.type = "text";
     task_input_el.classList.add("text");
-    const task = getStorage(indexa);
+    const task = getStorage(new_data["task"]);
     task_input_el.value = task["task"];
 
     task_input_el.setAttribute("readonly", "readonly");
@@ -125,8 +123,6 @@ window.addEventListener("load", () => {
 
     /* On remet à la valeure de l'input du user à null */
     input.value = "";
-
-    
 
     /* On écoute les évènements de click sur l'input de la tâche (task_input_el) et SI la classe de l'input user est text ( donc normal ) ALORS on ajoute la classe checked pour dire que la tâche est faite */
     task_content_el.addEventListener("click", () => {
