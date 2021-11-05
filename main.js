@@ -165,9 +165,8 @@ window.addEventListener("load", () => {
 
       list_el.removeChild(task_root_el);
       indexa -= 1;
-      localStorage.removeItem(localStorage.key(0));
+      localStorage.removeItem(localStorage.hasOwnProperty(key));
     });
-
     indexa += 1;
   });
 });
