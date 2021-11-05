@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
   const input = document.querySelector("#new-task-input");
   const list_el = document.querySelector("#tasks");
 
-  let indexa = 0;
+  
 
   /* On écoute les évènements submit sur le formulaire form */
   form.addEventListener("submit", (e) => {
@@ -44,12 +44,11 @@ window.addEventListener("load", () => {
     /* FACON KEY ENTIERE On ajoute la tâche au localStorage */
 
     var new_data = {
-      index: indexa,
       task: taskValue,
       completed: false,
     };
 
-    setStorage(indexa, new_data);
+    setStorage(localStorage.key, new_data);
 
     /* Ici on va faire la partie dynamique, c'est à dire la partie de la div task */
 
@@ -127,6 +126,8 @@ window.addEventListener("load", () => {
     /* On remet à la valeure de l'input du user à null */
     input.value = "";
 
+    
+
     /* On écoute les évènements de click sur l'input de la tâche (task_input_el) et SI la classe de l'input user est text ( donc normal ) ALORS on ajoute la classe checked pour dire que la tâche est faite */
     task_content_el.addEventListener("click", () => {
       if (
@@ -164,9 +165,7 @@ window.addEventListener("load", () => {
       /* On delete l'enfant task (task_root_el) du parent tasks (list_el) */
 
       list_el.removeChild(task_root_el);
-      indexa -= 1;
-      localStorage.removeItem(localStorage.hasOwnProperty(key));
+      localStorage.removeItem(key);
     });
-    indexa += 1;
   });
 });
