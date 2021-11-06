@@ -1,5 +1,4 @@
 /*  On écoute les évènements sur la page, après que la page soit chargée complètement */
-
 window.addEventListener("load", () => {
   /* On query les selecteurs du DOM qui seront utilisé */
   const form = document.querySelector("#new-task-form");
@@ -9,7 +8,6 @@ window.addEventListener("load", () => {
   const NumberofTasks = () => {
     return localStorage.length;
   };
-  console.log(NumberofTasks());
 
   if (NumberofTasks() > 0) {
     for (const [key, value] of Object.entries(localStorage)) {
@@ -29,6 +27,7 @@ window.addEventListener("load", () => {
         task: select_taskValue,
         completed: completed_taskValue,
       };
+      /* Ici on va faire la partie dynamique, c'est à dire la partie de la div task */
       /* On créer un element div et on ajoute la classe .task */
       const task_root_el = document.createElement("div");
       task_root_el.classList.add("task");
@@ -124,6 +123,8 @@ window.addEventListener("load", () => {
       });
     }
   }
+
+  /* ___________________________________________________________________________________________________ */
 
   /* On écoute les évènements submit sur le formulaire form */
   form.addEventListener("submit", (e) => {
