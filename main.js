@@ -1,9 +1,129 @@
 /*  On écoute les évènements sur la page, après que la page soit chargée complètement */
+
 window.addEventListener("load", () => {
   /* On query les selecteurs du DOM qui seront utilisé */
   const form = document.querySelector("#new-task-form");
   const input = document.querySelector("#new-task-input");
   const list_el = document.querySelector("#tasks");
+
+  const NumberofTasks = () => {
+    return localStorage.length;
+  };
+  console.log(NumberofTasks());
+
+  if (NumberofTasks() > 0) {
+    for (const [key, value] of Object.entries(localStorage)) {
+      const getStorage = (key) => {
+        return JSON.parse(localStorage.getItem(key));
+      };
+
+      const setStorage = (key, value) => {
+        const stringified_value = JSON.stringify(value);
+        localStorage.setItem(key, stringified_value);
+      };
+
+      const taskValue = JSON.parse(value);
+      const select_taskValue = taskValue["task"];
+      const completed_taskValue = taskValue["completed"];
+      var new_data = {
+        task: select_taskValue,
+        completed: completed_taskValue,
+      };
+      /* On créer un element div et on ajoute la classe .task */
+      const task_root_el = document.createElement("div");
+      task_root_el.classList.add("task");
+
+      /* On créer un element div et on ajoute la classe .content */
+      const task_content_el = document.createElement("div");
+      task_content_el.classList.add("content");
+
+      /* On créer un element input, on lui attribue un type texte, on lui ajoue la classe texte, on lui attribue la valeur 'task' qui est donc la valeure de l'input du user. Enfin, on lui met un attribue Read-Only, pour ne pas permettre de modifier la tâche */
+      const task_input_el = document.createElement("input");
+      task_input_el.type = "text";
+      task_input_el.classList.add("text");
+      const task = taskValue;
+      task_input_el.value = task["task"];
+
+      task_input_el.setAttribute("readonly", "readonly");
+
+      /* On créer un element div et on ajoute la classe .actions */
+      const task_actions_el = document.createElement("div");
+      task_actions_el.classList.add("actions");
+
+      /*  On créer un element button et on lui ajoute la classe edit ainsi qu'un innerHTML pour le nommer "Editer" */
+      const task_edit_el = document.createElement("button");
+      task_edit_el.classList.add("edit");
+      task_edit_el.innerHTML = "Editer";
+
+      /*  On créer un element button et on lui ajoute la classe delete ainsi qu'un innerHTML pour le nommer "Supprimer" */
+      const task_delete_el = document.createElement("button");
+      task_delete_el.classList.add("delete");
+      task_delete_el.innerHTML = "Supprimer";
+
+      /* On appendChild la tâche (task) dans les tâches (list_el)*/
+      list_el.appendChild(task_root_el);
+
+      /* On appendChild le contenu (content) dans la tâche (task_root_el) */
+      task_root_el.appendChild(task_content_el);
+
+      /* On appendChild l'input du user (input) dans le contenu (content) */
+      task_content_el.appendChild(task_input_el);
+
+      /* On apprenChild les actions (actions) dans la tâche (task) */
+      task_root_el.appendChild(task_actions_el);
+
+      /* On appendChild le bouton Editer (EditButton) dans les actions (actions) */
+      task_actions_el.appendChild(task_edit_el);
+
+      /* On appendChild le bouton Supprimer (DeleteButton) dans les actions (actions) */
+      task_actions_el.appendChild(task_delete_el);
+
+      /* On écoute les évènements de click sur l'input de la tâche (task_input_el) et SI la classe de l'input user est text ( donc normal ) ALORS on ajoute la classe checked pour dire que la tâche est faite, puis on fait les modifs dans le localStorage*/
+      task_content_el.addEventListener("click", () => {
+        if (
+          task_input_el.classList == "text" &&
+          task_edit_el.innerHTML.toLowerCase() == "editer"
+        ) {
+          task_input_el.classList.add("checked");
+          const checked_task = getStorage(taskValue);
+          checked_task["completed"] = "true";
+          setStorage(taskValue, checked_task);
+        } else {
+          task_input_el.classList.remove("checked");
+          const unchecked_task = getStorage(taskValue);
+          unchecked_task["completed"] = "false";
+          setStorage(taskValue, unchecked_task);
+        }
+      });
+
+      /* On écoute les évènements de click sur le bouton edit (task_edit_el) */
+      task_edit_el.addEventListener("click", () => {
+        /* SI le InnerHTML du bouton Edit est "Edit", ALORS -> 
+        - On retire l'attribut de readOnly de l'input (task_input_el) pour permettre au user de modifier sa tâche
+        - On focus sur l'input user ( permet au curseur de passer en mode edition sur l'input sans qu'on ai besoin d'aller cliquer dessus)
+        - On modifie la valeure du bouton Edit (le InnerHTML puisque c'est un bouton) pour devenir "Sauver"
+        SINON (donc ça veut dire que c'est marqué Sauver) -> 
+        - On remet l'attribut de readOnly de l'input (task_input_el) pour de nouveau ne plus permettre de modifier
+        - On remet l'innerHTML du bouton Edit en "Edit" */
+
+        if (task_edit_el.innerHTML.toLowerCase() == "editer") {
+          task_input_el.removeAttribute("readonly");
+          task_input_el.focus();
+          task_edit_el.innerHTML = "Sauver";
+        } else {
+          task_input_el.setAttribute("readonly", "readonly");
+          task_edit_el.innerHTML = "Editer";
+        }
+      });
+
+      /* On écoute les évènements sur le bouton delete */
+      task_delete_el.addEventListener("click", () => {
+        /* On delete l'enfant task (task_root_el) du parent tasks (list_el) ainsi que sa valeure dans le localStorage */
+        list_el.removeChild(task_root_el);
+        localStorage.removeItem(select_taskValue);
+      });
+    }
+  }
 
   /* On écoute les évènements submit sur le formulaire form */
   form.addEventListener("submit", (e) => {
@@ -46,7 +166,7 @@ window.addEventListener("load", () => {
       completed: false,
     };
 
-    setStorage("test", new_data);
+    setStorage(taskValue, new_data);
 
     /* Ici on va faire la partie dynamique, c'est à dire la partie de la div task */
 
@@ -58,11 +178,11 @@ window.addEventListener("load", () => {
     const task_content_el = document.createElement("div");
     task_content_el.classList.add("content");
 
-    /* On créer un element input, on lui attribue un type texte, on lui ajoue la classe texte, puis le trick ici, on lui attribue la valeur 'task' qui est donc la valeure de l'input du user. Enfin, on lui met un attribue Read-Only, pour ne pas permettre de modifier la tâche */
+    /* On créer un element input, on lui attribue un type texte, on lui ajoue la classe texte, on lui attribue la valeur 'task' qui est donc la valeure de l'input du user. Enfin, on lui met un attribue Read-Only, pour ne pas permettre de modifier la tâche */
     const task_input_el = document.createElement("input");
     task_input_el.type = "text";
     task_input_el.classList.add("text");
-    const task = getStorage(new_data["task"]);
+    const task = getStorage(taskValue);
     task_input_el.value = task["task"];
 
     task_input_el.setAttribute("readonly", "readonly");
@@ -124,15 +244,21 @@ window.addEventListener("load", () => {
     /* On remet à la valeure de l'input du user à null */
     input.value = "";
 
-    /* On écoute les évènements de click sur l'input de la tâche (task_input_el) et SI la classe de l'input user est text ( donc normal ) ALORS on ajoute la classe checked pour dire que la tâche est faite */
+    /* On écoute les évènements de click sur l'input de la tâche (task_input_el) et SI la classe de l'input user est text ( donc normal ) ALORS on ajoute la classe checked pour dire que la tâche est faite, puis on fait les modifs dans le localStorage*/
     task_content_el.addEventListener("click", () => {
       if (
         task_input_el.classList == "text" &&
         task_edit_el.innerHTML.toLowerCase() == "editer"
       ) {
         task_input_el.classList.add("checked");
+        const checked_task = getStorage(taskValue);
+        checked_task["completed"] = "true";
+        setStorage(taskValue, checked_task);
       } else {
         task_input_el.classList.remove("checked");
+        const unchecked_task = getStorage(taskValue);
+        unchecked_task["completed"] = "false";
+        setStorage(taskValue, unchecked_task);
       }
     });
 
@@ -158,10 +284,9 @@ window.addEventListener("load", () => {
 
     /* On écoute les évènements sur le bouton delete */
     task_delete_el.addEventListener("click", () => {
-      /* On delete l'enfant task (task_root_el) du parent tasks (list_el) */
-
+      /* On delete l'enfant task (task_root_el) du parent tasks (list_el) ainsi que sa valeure dans le localStorage */
       list_el.removeChild(task_root_el);
-      localStorage.removeItem(key);
+      localStorage.removeItem(taskValue);
     });
   });
 });
