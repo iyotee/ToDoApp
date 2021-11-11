@@ -20,12 +20,12 @@ window.addEventListener("load", () => {
         localStorage.setItem(key, stringified_value);
       };
 
-      const taskValue = JSON.parse(value);
+      let taskValue = JSON.parse(value);
       const select_taskValue = taskValue["task"];
-      const completed_taskValue = taskValue["completed"];
+      const select_CompletedValue = taskValue["completed"];
       var new_data = {
         task: select_taskValue,
-        completed: completed_taskValue,
+        completed: select_CompletedValue,
       };
       /* Ici on va faire la partie dynamique, c'est à dire la partie de la div task */
       /* On créer un element div et on ajoute la classe .task */
@@ -42,6 +42,12 @@ window.addEventListener("load", () => {
       task_input_el.classList.add("text");
       const task = taskValue;
       task_input_el.value = task["task"];
+
+      if (select_CompletedValue === "true") {
+        task_input_el.classList.add("checked");
+      } else {
+        task_input_el.classList.remove("checked");
+      }
 
       task_input_el.setAttribute("readonly", "readonly");
 
@@ -84,14 +90,14 @@ window.addEventListener("load", () => {
           task_edit_el.innerHTML.toLowerCase() == "editer"
         ) {
           task_input_el.classList.add("checked");
-          const checked_task = getStorage(taskValue);
+          const checked_task = getStorage(task_input_el.value);
           checked_task["completed"] = "true";
-          setStorage(taskValue, checked_task);
+          setStorage(task_input_el.value, checked_task);
         } else {
           task_input_el.classList.remove("checked");
-          const unchecked_task = getStorage(taskValue);
+          const unchecked_task = getStorage(task_input_el.value);
           unchecked_task["completed"] = "false";
-          setStorage(taskValue, unchecked_task);
+          setStorage(task_input_el.value, unchecked_task);
         }
       });
 
@@ -109,10 +115,22 @@ window.addEventListener("load", () => {
           task_input_el.removeAttribute("readonly");
           task_input_el.focus();
           task_edit_el.innerHTML = "Sauver";
-        } else {
+        } else if (task_edit_el.innerHTML.toLowerCase() == "sauver") {
+          const ToEdit_task = getStorage(taskValue);
+          const edited_task = task_input_el.value;
+
+          var edited_data = {
+            task: edited_task,
+            completed: ToEdit_task["completed"],
+          };
+
+          setStorage(edited_data["task"], edited_data);
+          localStorage.removeItem(ToEdit_task["task"]);
+
           task_input_el.setAttribute("readonly", "readonly");
           task_edit_el.innerHTML = "Editer";
         }
+        taskValue = task_input_el.value;
       });
 
       /* On écoute les évènements sur le bouton delete */
@@ -131,7 +149,7 @@ window.addEventListener("load", () => {
     e.preventDefault(); /* Retrouver à quoi ça sert concrètement */
 
     /* On récupère la valeure de l'input du user */
-    const taskValue = input.value;
+    let taskValue = input.value;
 
     /* On test si il y a une valeure dans l'input. Si y'à pas de valeure, alors on affiche une alerte */
     if (!taskValue) {
@@ -277,10 +295,22 @@ window.addEventListener("load", () => {
         task_input_el.removeAttribute("readonly");
         task_input_el.focus();
         task_edit_el.innerHTML = "Sauver";
-      } else {
+      } else if (task_edit_el.innerHTML.toLowerCase() == "sauver") {
+        const ToEdit_task = getStorage(taskValue);
+        const edited_task = task_input_el.value;
+
+        var edited_data = {
+          task: edited_task,
+          completed: ToEdit_task["completed"],
+        };
+
+        setStorage(edited_data["task"], edited_data);
+        localStorage.removeItem(ToEdit_task["task"]);
+
         task_input_el.setAttribute("readonly", "readonly");
         task_edit_el.innerHTML = "Editer";
       }
+      taskValue = task_input_el.value;
     });
 
     /* On écoute les évènements sur le bouton delete */

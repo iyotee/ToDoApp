@@ -29,7 +29,7 @@ body {
   flex-direction: column;
   min-height: 100vh; /* 100vh veut dire la hauteur de l'écran, 200vh est donc le double de la hauteur de l'écran de l'utilisateur */
   background-image: linear-gradient(
-    0.43turn,
+    0.38turn,
     var(--darkest),
     40%,
     var(--darkest2)
